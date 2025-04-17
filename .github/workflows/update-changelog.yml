@@ -1,0 +1,51 @@
+name: Custom Changelog Updater
+
+on:
+  push:
+    branches:
+      - main # change this if your default branch is different
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Get full history so we can see all commits
+
+      - name: Set up Git config
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Generate custom changelog
+        run: |
+          TODAY=$(date +"%Y-%m-%d")
+          echo "## 🔥 $TODAY" > new_commits.md
+          
+          # Get new commits since last changelog update
+          LAST_CHANGELOG_COMMIT=$(git log -n 1 --pretty=format:%H -- CHANGELOG.md || echo "")
+          if [ -n "$LAST_CHANGELOG_COMMIT" ]; then
+            git log $LAST_CHANGELOG_COMMIT..HEAD --pretty=format:"- %s (%an)" >> new_commits.md
+          else
+            git log --pretty=format:"- %s (%an)" >> new_commits.md
+          fi
+
+          if [ $(wc -l < new_commits.md) -eq 1 ]; then
+            echo "No new commits since last update. Skipping."
+            exit 0
+          fi
+
+          # Append to changelog
+          touch CHANGELOG.md
+          echo "" >> new_commits.md
+          cat CHANGELOG.md >> new_commits.md
+          mv new_commits.md CHANGELOG.md
+
+      - name: Commit and push changelog
+        run: |
+          git add CHANGELOG.md
+          git commit -m "docs: 🔥 update changelog [skip ci]" || echo "Nothing to commit"
+          git push
