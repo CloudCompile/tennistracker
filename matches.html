@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matches - Tennis Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Tennis Tracker</h1>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="practice.html">Practice</a>
+        </nav>
+    </header>
+    <main>
+        <section id="match-form">
+            <h2>Enter Match Details</h2>
+            <form id="matchForm">
+                <label for="matchType">Match Type:</label>
+                <select id="matchType" name="matchType">
+                    <option value="singles">Singles</option>
+                    <option value="doubles">Doubles</option>
+                </select>
+                <label for="setScores">Set Scores:</label>
+                <input type="text" id="setScores" name="setScores" placeholder="e.g., 6-4, 7-5">
+                <label for="gameScores">Game Scores:</label>
+                <input type="text" id="gameScores" name="gameScores" placeholder="e.g., 40-15">
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+        <section id="match-list">
+            <h2>Match History</h2>
+            <ul id="matches"></ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 CJ Hauser</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
