@@ -175,7 +175,3 @@ Serves Out: ${totalServesOut}
     renderPractices();
     updateAnalytics();
 });
-    renderMatches();
-    renderPractices();
-    updateAnalytics();
-});
