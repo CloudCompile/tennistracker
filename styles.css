@@ -80,3 +80,11 @@ footer {
     width: 100%;
     bottom: 0;
 }
+
+blockquote {
+    margin: 20px 0;
+    padding: 10px 20px;
+    background-color: #e0f7fa;
+    border-left: 5px solid #00acc1;
+    font-style: italic;
+}
