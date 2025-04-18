@@ -88,3 +88,8 @@ blockquote {
     border-left: 5px solid #00acc1;
     font-style: italic;
 }
+
+canvas {
+    max-width: 100%;
+    height: auto;
+}
