@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Practice - Tennis Tracker</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
 </head>
 <body>
     <header>
@@ -12,6 +13,8 @@
         <nav>
             <a href="home.html">Home</a>
             <a href="matches.html">Matches</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="aboutus.html">About Us</a>
         </nav>
     </header>
     <main>
@@ -20,6 +23,16 @@
             <form id="practiceForm">
                 <label for="timeSpent">Time Spent Practicing (minutes):</label>
                 <input type="number" id="timeSpent" name="timeSpent" min="1">
+                <label for="effort">Effort Put In (0-100):</label>
+                <input type="range" id="effort" name="effort" min="0" max="100">
+                <label for="workOn">Worked On:</label>
+                <select id="workOn" name="workOn">
+                    <option value="serving">Serving</option>
+                    <option value="drills">Drills</option>
+                    <option value="running">Running</option>
+                    <option value="strategies">Strategies</option>
+                    <option value="scrimmages">Scrimmages</option>
+                </select>
                 <button type="submit">Submit</button>
             </form>
         </section>
@@ -29,8 +42,7 @@
         </section>
     </main>
     <footer>
-        <p>&copy; 2025 CJ Hauser</p>
+        <p>&copy; 2023 Tennis Tracker</p>
     </footer>
-    <script src="script.js"></script>
 </body>
 </html>
