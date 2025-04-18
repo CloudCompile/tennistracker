@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Tennis Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Tennis Tracker</h1>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="matches.html">Matches</a>
+            <a href="practice.html">Practice</a>
+            <a href="aboutus.html">About Us</a>
+        </nav>
+    </header>
+    <main>
+        <section id="win-percentage">
+            <h2>Win Percentage</h2>
+            <canvas id="winPercentageChart"></canvas>
+        </section>
+        <section id="time-spent">
+            <h2>Time Spent Playing</h2>
+            <canvas id="timeSpentChart"></canvas>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Tennis Tracker</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const winPercentageChart = new Chart(document.getElementById('winPercentageChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['Wins', 'Losses'],
+                    datasets: [{
+                        data: [70, 30],
+                        backgroundColor: ['#4CAF50', '#f44336']
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+
+            const timeSpentChart = new Chart(document.getElementById('timeSpentChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                    datasets: [{
+                        label: 'Time Spent (minutes)',
+                        data: [120, 150, 180, 100, 140, 160, 170],
+                        backgroundColor: '#4CAF50'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
