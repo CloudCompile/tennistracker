@@ -1,28 +1,18 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const matchForm = document.getElementById('matchForm');
     const practiceForm = document.getElementById('practiceForm');
     const matchesList = document.getElementById('matches');
     const practicesList = document.getElementById('practices');
 
-    let matches = [];
-    let practices = [];
+    let matches = JSON.parse(localStorage.getItem('matches')) || [];
+    let practices = JSON.parse(localStorage.getItem('practices')) || [];
 
-    // Load data from localStorage if available
-    if (localStorage.getItem('matches')) {
-        matches = JSON.parse(localStorage.getItem('matches'));
-        renderMatches();
-    }
-
-    if (localStorage.getItem('practices')) {
-        practices = JSON.parse(localStorage.getItem('practices'));
-        renderPractices();
-    }
-
-    matchForm.addEventListener('submit', function(event) {
+    // Match Form Submission
+    matchForm?.addEventListener('submit', function (event) {
         event.preventDefault();
         const matchType = document.getElementById('matchType').value;
-        const servesIn = document.getElementById('servesIn').value;
-        const servesOut = document.getElementById('servesOut').value;
+        const servesIn = parseInt(document.getElementById('servesIn').value) || 0;
+        const servesOut = parseInt(document.getElementById('servesOut').value) || 0;
         const setScores = document.getElementById('setScores').value;
         const gameScores = document.getElementById('gameScores').value;
 
@@ -31,12 +21,14 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('matches', JSON.stringify(matches));
         renderMatches();
         matchForm.reset();
+        updateAnalytics();
     });
 
-    practiceForm.addEventListener('submit', function(event) {
+    // Practice Form Submission
+    practiceForm?.addEventListener('submit', function (event) {
         event.preventDefault();
-        const timeSpent = document.getElementById('timeSpent').value;
-        const effort = document.getElementById('effort').value;
+        const timeSpent = parseInt(document.getElementById('timeSpent').value) || 0;
+        const effort = parseInt(document.getElementById('effort').value) || 0;
         const workOn = document.getElementById('workOn').value;
 
         const practice = { timeSpent, effort, workOn };
@@ -44,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('practices', JSON.stringify(practices));
         renderPractices();
         practiceForm.reset();
+        updateAnalytics();
     });
 
     function renderMatches() {
@@ -63,4 +56,74 @@ document.addEventListener('DOMContentLoaded', function() {
             practicesList.appendChild(li);
         });
     }
+
+    function updateAnalytics() {
+        // Win Percentage Calculation
+        const wins = matches.filter(match => {
+            const [playerSets, opponentSets] = match.setScores.split(',').map(score => parseInt(score.split('-')[0]));
+            return playerSets > opponentSets;
+        }).length;
+        const totalMatches = matches.length;
+        const winPercentage = totalMatches > 0 ? (wins / totalMatches) * 100 : 0;
+
+        // Time Spent Playing vs Practicing
+        const totalTimePlaying = matches.reduce((sum, match) => sum + 60, 0); // Assuming 60 minutes per match
+        const totalTimePracticing = practices.reduce((sum, practice) => sum + practice.timeSpent, 0);
+
+        // Serves In/Out
+        const totalServesIn = matches.reduce((sum, match) => sum + match.servesIn, 0);
+        const totalServesOut = matches.reduce((sum, match) => sum + match.servesOut, 0);
+
+        // Update Charts
+        if (document.getElementById('winPercentageChart')) {
+            new Chart(document.getElementById('winPercentageChart'), {
+                type: 'pie',
+                data: {
+                    labels: ['Wins', 'Losses'],
+                    datasets: [{
+                        data: [winPercentage, 100 - winPercentage],
+                        backgroundColor: ['#4CAF50', '#f44336']
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+
+        if (document.getElementById('timeSpentChart')) {
+            new Chart(document.getElementById('timeSpentChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Playing', 'Practicing'],
+                    datasets: [{
+                        label: 'Time Spent (minutes)',
+                        data: [totalTimePlaying, totalTimePracticing],
+                        backgroundColor: ['#4CAF50', '#2196F3']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+
+        if (document.getElementById('servesInOutChart')) {
+            new Chart(document.getElementById('servesInOutChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Serves In', 'Serves Out'],
+                    datasets: [{
+                        data: [totalServesIn, totalServesOut],
+                        backgroundColor: ['#4CAF50', '#FFC107']
+                    }]
+                },
+                options: { responsive: true }
+            });
+        }
+    }
+
+    // Initial Render
+    renderMatches();
+    renderPractices();
+    updateAnalytics();
 });
