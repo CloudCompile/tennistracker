@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Tennis Tracker</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
 </head>
 <body>
     <header>
@@ -12,23 +13,30 @@
         <nav>
             <a href="matches.html">Matches</a>
             <a href="practice.html">Practice</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="aboutus.html">About Us</a>
         </nav>
     </header>
     <main>
         <section id="welcome">
             <h2>Welcome to Tennis Tracker!</h2>
             <p>Track your tennis matches and practice sessions.</p>
+            <blockquote id="quote"></blockquote>
         </section>
     </main>
-    <button onclick="location.href='matches.html'" style="padding: 10px 20px; font-size: 16px; border-radius: 8px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
-  Go to Match Tracking
-</button>
-    <button onclick="location.href='practice.html'" style="padding: 10px 20px; font-size: 16px; border-radius: 8px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
-  Go to Practice Tracking
-</button>
-
     <footer>
         <p>&copy; 2025 CJ Hauser</p>
     </footer>
+    <script>
+        const quotes = [
+            "The difference between a champion and the rest is not a better body. It is a better mind." - Jack Lengyel,
+            "Tennis is 85% mental. The other 15% is physical." - Jack Nicklaus,
+            "Tennis is a sport of inches, where millimeters make the difference." - Jimmy Connors,
+            "Success is not final, failure is not fatal: it is the courage to continue that counts." - Winston Churchill
+        ];
+
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('quote').textContent = randomQuote;
+    </script>
 </body>
 </html>
